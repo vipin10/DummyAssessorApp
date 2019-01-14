@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="assessor.android.com.dummyassessorapp">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SignIn.SplashScreen"
+            android:theme="@style/AppTheme1">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GlobalAccess.MainActivity" />
+        <activity
+            android:name=".AsssessorAttendance.AssessorAttenAct"
+            android:label="Assesor Attendance"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name=".SignIn.SignInAct"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".AsssessorAttendance.BatchSelection"
+            android:label="Select Batch"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name=".StudentsAttenandList.StudentsListAct"
+            android:label="Students List"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name=".StudentsAttenandList.StudentAttenAct"
+            android:label="Student Attendance"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name=".TestPack.TestInstruction"
+            android:label="Instructions"
+            android:theme="@style/Apptheme2" />
+        <activity android:name=".AsssessorAttendance.Welcome_page"
+            android:theme="@style/Apptheme2"
+            ></activity>
+    </application>
+
+</manifest>
