@@ -28,11 +28,14 @@
         <activity android:name=".GlobalAccess.MainActivity" />
         <activity
             android:name=".AsssessorAttendance.AssessorAttenAct"
+            android:screenOrientation="portrait"
             android:label="Assesor Attendance"
             android:theme="@style/Apptheme2" />
         <activity
             android:name=".SignIn.SignInAct"
-            android:theme="@style/AppTheme1" />
+            android:theme="@style/AppTheme1"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".AsssessorAttendance.BatchSelection"
             android:label="Select Batch"
@@ -44,14 +47,17 @@
         <activity
             android:name=".StudentsAttenandList.StudentAttenAct"
             android:label="Student Attendance"
+            android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
             android:name=".TestPack.TestInstruction"
             android:label="Instructions"
             android:theme="@style/Apptheme2" />
-        <activity android:name=".AsssessorAttendance.Welcome_page"
-            android:theme="@style/Apptheme2"
-            ></activity>
+        <activity
+            android:name=".AsssessorAttendance.Welcome_page"
+            android:theme="@style/Apptheme2" />
+
+        <activity android:name=".Assesment_Que.Question_List"></activity>
     </application>
 
 </manifest>

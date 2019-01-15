@@ -75,7 +75,7 @@
         app:button_bottom_padding="20dp"
         app:button_background="@drawable/shape_button"
         app:initial_state="disabled"
-        app:has_activate_state="true"
+        app:has_activate_state="false"
         />
 
 

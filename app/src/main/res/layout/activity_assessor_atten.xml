@@ -12,8 +12,8 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="1"
-      android:weightSum=".9"
+      android:layout_weight="1.6"
+      android:weightSum="1"
       android:layout_marginLeft="10dp"
       android:layout_marginRight="10dp"
       android:orientation="vertical"
@@ -27,9 +27,9 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_weight=".4"
+            android:layout_weight=".6"
             android:paddingStart="10dp"
             android:paddingLeft="10dp"
             android:text="Assessor Name :-"
@@ -38,19 +38,19 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/nameid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_weight=".6"
             android:text="Vipin Rai"
-
             android:textColor="#000000"
             android:textSize="18sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".6"
+        android:layout_weight="1.3"
         android:weightSum="1"
         android:orientation="horizontal"
         >
@@ -68,6 +68,7 @@
             />
 
         <TextView
+            android:id="@+id/addressid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".7"
@@ -82,8 +83,8 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:weightSum="1"
-        android:layout_weight="2.6"
-        android:layout_marginTop="40dp"
+        android:layout_weight="2.2"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/imageborder"
@@ -105,7 +106,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".8"
+        android:layout_weight=".7"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -131,19 +132,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight=".6"
-        android:gravity="center|bottom"
+        android:layout_weight=".7"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="4dp"
         android:orientation="vertical" >
 
     <Button
         android:id="@+id/attendencesubmit"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:text="Proceed"
+        android:layout_gravity="center"
+        android:textAlignment="center"
         android:textSize="24sp"
         />
     </LinearLayout>
