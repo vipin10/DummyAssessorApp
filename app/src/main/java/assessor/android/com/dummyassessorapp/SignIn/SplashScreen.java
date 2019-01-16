@@ -43,15 +43,15 @@ SessionManager session;
                 try {
                     Thread.sleep(2000);
                     String status = session.getPreferences(SplashScreen.this, "status");
-                    Intent ii = new Intent(SplashScreen.this, SignInAct.class);
-                    startActivity(ii);
-                   /* if (status.equals("1")) {
+                   // Intent ii = new Intent(SplashScreen.this, SignInAct.class);
+                   // startActivity(ii);
+                    if (status.equals("1")) {
                         Intent intent = new Intent(SplashScreen.this, Welcome_page.class);
                         startActivity(intent);
                     } else {
                         Intent i = new Intent(SplashScreen.this, SignInAct.class);
                         startActivity(i);
-                    }*/
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

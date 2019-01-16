@@ -42,7 +42,7 @@ import static android.view.View.VISIBLE;
 public class SignInAct extends AppCompatActivity {
 
     private ImageView bookIconImageView;
-    private TextView bookITextView;
+    private TextView bookITextView,skiptextview;
     private ProgressBar loadingProgressBar;
     private RelativeLayout rootView, afterAnimationView;
     Button loginsubmit;
@@ -91,6 +91,12 @@ public class SignInAct extends AppCompatActivity {
                 startActivity(i);*/
             }
         });
+        skiptextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
     }
 
     private void initViews() {
@@ -102,6 +108,7 @@ public class SignInAct extends AppCompatActivity {
         username=findViewById(R.id.emailEditText);
         passowrd=findViewById(R.id.passwordEditText);
         loginsubmit=findViewById(R.id.loginButton);
+        skiptextview=findViewById(R.id.skipTextView);
     }
 
     private void startAnimation() {
@@ -200,4 +207,11 @@ public class SignInAct extends AppCompatActivity {
         request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
 }
