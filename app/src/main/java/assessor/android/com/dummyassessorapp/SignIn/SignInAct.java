@@ -158,7 +158,7 @@ public class SignInAct extends AppCompatActivity {
                        String name= jobj.getString("name");
                        String address=jobj.getString("address");
                        String tab_row = jobj.getString("user_type");
-                      // Toast.makeText(getApplicationContext(),"Username is"+message+name+address+tab_row,Toast.LENGTH_LONG).show();
+                       Toast.makeText(getApplicationContext(),"Username is"+message+name+address+tab_row,Toast.LENGTH_LONG).show();
                        sessionManager.setPreferences(getApplicationContext(), "status", "1");
                        SharedPreferences.Editor editor = sharedpreferences.edit();
                        editor.putString("Name", name);
