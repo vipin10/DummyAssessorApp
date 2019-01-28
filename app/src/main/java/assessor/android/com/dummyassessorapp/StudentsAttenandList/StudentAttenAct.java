@@ -58,6 +58,9 @@ public class StudentAttenAct extends AppCompatActivity{
         atten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = ssp.edit();
+                editor.putString("currentatten",attenstatus);
+                editor.commit();
                 dbAutoSave.insertddd(namee,attenstatus,"0");
                 Intent ii=new Intent(StudentAttenAct.this,TestInstruction.class);
                 startActivity(ii);

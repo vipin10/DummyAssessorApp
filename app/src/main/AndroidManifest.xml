@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ExamSection.Practical_Marks"></activity>
         <activity
             android:name=".SignIn.SplashScreen"
             android:theme="@style/AppTheme1">
@@ -27,14 +28,13 @@
         </activity>
         <activity
             android:name=".AsssessorAttendance.AssessorAttenAct"
-            android:screenOrientation="portrait"
             android:label="Assesor Attendance"
+            android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
             android:name=".SignIn.SignInAct"
-            android:theme="@style/AppTheme1"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".AsssessorAttendance.BatchSelection"
             android:label="Select Batch"
@@ -54,13 +54,12 @@
             android:theme="@style/Apptheme2" />
         <activity
             android:name=".AsssessorAttendance.Welcome_page"
-            android:theme="@style/Apptheme2"
             android:screenOrientation="portrait"
-            />
-<activity android:name=".ExamSection.MainActivity"
-    android:theme="@style/Apptheme2"
-    ></activity>
-        <activity android:name=".Assesment_Que.Question_List"></activity>
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name=".ExamSection.MainActivity"
+            android:theme="@style/Apptheme2" />
+        <activity android:name=".Assesment_Que.Question_List" />
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@
     android:layout_marginTop="10dp"
     android:background="#ffffff"
     android:elevation="10dp"
+    android:id="@+id/cardv1"
     android:orientation="vertical">
 
    <!-- <RelativeLayout

@@ -29,6 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,7 @@ import java.util.Map;
 
 import assessor.android.com.dummyassessorapp.AsssessorAttendance.BatchSelection;
 import assessor.android.com.dummyassessorapp.GlobalAccess.MyNetwork;
+import assessor.android.com.dummyassessorapp.LocalDB.DbAutoSave;
 import assessor.android.com.dummyassessorapp.R;
 
 public class StudentsListAct extends AppCompatActivity {
@@ -68,7 +70,10 @@ public class StudentsListAct extends AppCompatActivity {
     List<String> Email = new ArrayList<>();
     ProgressDialog pdd;
     SharedPreferences sp;
+    Cursor cursor;
     final String mypreference = "mypref1";
+    DbAutoSave dbAutoSave;
+    String attenstatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,20 @@ public class StudentsListAct extends AppCompatActivity {
         batchidd=il.getStringExtra("batchid");
         sp=getSharedPreferences(mypreference,Context.MODE_PRIVATE);
         Toast.makeText(getApplicationContext(),"batchidd"+batchidd,Toast.LENGTH_LONG).show();
+        dbAutoSave=new DbAutoSave(getApplicationContext());
+        cursor=dbAutoSave.getAllData();
+        if (cursor!=null){
+            cursor.moveToFirst();
+            attenstatus=cursor.getColumnName(3);
+            if (attenstatus.equals("0")){
+
+            }else if(attenstatus.equals("1")){
+
+            }else
+            {
+
+            }
+        }
     }
 
     @Override
@@ -226,5 +245,40 @@ public class StudentsListAct extends AppCompatActivity {
         };
         request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("This is not the right time to exit. The Assessment process has been started.")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+                        //finish();
+
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("Stay", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
     }
 }

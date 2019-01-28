@@ -1,6 +1,9 @@
 package assessor.android.com.dummyassessorapp.ExamSection;
 
+
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -8,14 +11,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
+import assessor.android.com.dummyassessorapp.LocalDB.DbAutoSave;
 import assessor.android.com.dummyassessorapp.R;
+import assessor.android.com.dummyassessorapp.StudentsAttenandList.StudentsListAct;
 
 public class MainActivity extends AppCompatActivity {
     private static final long START_TIME_IN_MILLIS = 600000;
@@ -25,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private long EndTime;
     FragmentParent fragmentParent;
     TextView textView,finalSubmitbutton;
+    DbAutoSave dbAutoSave;
+    String namee1;
+    SharedPreferences sharedPreferences;
+    public static final String mypreference = "mypref1";
+    String currentatten;
     ArrayList<String> aa=new ArrayList<>();
      ArrayList<String> bb=new ArrayList<>();
      ArrayList<String[]> options=new ArrayList<>();
@@ -63,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getIDs();
+        dbAutoSave = new DbAutoSave(getApplicationContext());
+        sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        namee1=sharedPreferences.getString("StuName","");
         //setEvents();
         aa.add("1");
         aa.add("2");
@@ -79,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         options.add(title2);
         options.add(title3);
         options.add(title4);
+        currentatten=sharedPreferences.getString("currentatten","");
         for (int ii=0;ii<=aa.size()-1;ii++) {
 
             fragmentParent.addPage(aa.get(ii) + "",bb.get(ii));
@@ -128,8 +138,9 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface arg0, int arg1) {
-
-
+                                dbAutoSave.insertddd(namee1,currentatten,"1");
+                                Intent ii=new Intent(MainActivity.this, StudentsListAct.class);
+                                startActivity(ii);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -156,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                AlertDialog alertbox = new AlertDialog.Builder(getApplicationContext())
+              /*  AlertDialog alertbox = new AlertDialog.Builder(getApplicationContext())
                         .setMessage("Click Yes to schedule Test for Final Submission.")
                          .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -167,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
 
-                        .show();
+                        .show();*/
                 textView.setText("done!");
                 TimerRunning = false;
                 updateButtons();
