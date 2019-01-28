@@ -25,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GlobalAccess.MainActivity" />
         <activity
             android:name=".AsssessorAttendance.AssessorAttenAct"
             android:screenOrientation="portrait"
@@ -58,7 +57,9 @@
             android:theme="@style/Apptheme2"
             android:screenOrientation="portrait"
             />
-
+<activity android:name=".ExamSection.MainActivity"
+    android:theme="@style/Apptheme2"
+    ></activity>
         <activity android:name=".Assesment_Que.Question_List"></activity>
     </application>
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import assessor.android.com.dummyassessorapp.Assesment_Que.Question_List;
+import assessor.android.com.dummyassessorapp.ExamSection.MainActivity;
 import assessor.android.com.dummyassessorapp.R;
 
 public class TestInstruction extends AppCompatActivity {
@@ -19,7 +20,7 @@ Button testinstructproceed;
         testinstructproceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ii=new Intent(TestInstruction.this,Question_List.class);
+                Intent ii=new Intent(TestInstruction.this, MainActivity.class);
                 startActivity(ii);
             }
         });

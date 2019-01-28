@@ -2,6 +2,7 @@ package assessor.android.com.dummyassessorapp.SignIn;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import assessor.android.com.dummyassessorapp.AsssessorAttendance.Welcome_page;
+import assessor.android.com.dummyassessorapp.ExamSection.MainActivity;
 import assessor.android.com.dummyassessorapp.GlobalAccess.SessionManager;
 import assessor.android.com.dummyassessorapp.R;
 
@@ -19,7 +21,9 @@ public class SplashScreen extends AppCompatActivity {
 SessionManager session;
     String[] permission ={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
     TextView ttv;
+    Long timee;
     int perm,perm1;
+    SharedPreferences sp;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,11 @@ SessionManager session;
        // goNext();
         perm = ContextCompat.checkSelfPermission(this,  Manifest.permission.ACCESS_FINE_LOCATION);
         perm1 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        sp=getSharedPreferences("prefs", MODE_PRIVATE);
+   /*     if (sp.contains("millisLeft")) {
+            timee = sp.getLong("millisLeft", timee);
+        }*/
         if (perm != PackageManager.PERMISSION_GRANTED || perm1
                 != PackageManager.PERMISSION_GRANTED){
             requestPermissions(permission, 7882);
@@ -35,6 +44,7 @@ SessionManager session;
             goNext();
 
         }
+
         }
     private void goNext() {
         session = new SessionManager();
@@ -43,12 +53,17 @@ SessionManager session;
                 try {
                     Thread.sleep(2000);
                     String status = session.getPreferences(SplashScreen.this, "status");
-                   // Intent ii = new Intent(SplashScreen.this, SignInAct.class);
-                   // startActivity(ii);
                     if (status.equals("1")) {
                         Intent intent = new Intent(SplashScreen.this, Welcome_page.class);
                         startActivity(intent);
-                    } else {
+                    }
+
+
+                   /* else if (timee>=0){
+                        Intent i1 = new Intent(SplashScreen.this, MainActivity.class);
+                        startActivity(i1);
+                    }*/
+                    else {
                         Intent i = new Intent(SplashScreen.this, SignInAct.class);
                         startActivity(i);
                     }

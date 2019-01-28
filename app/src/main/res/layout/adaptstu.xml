@@ -76,7 +76,7 @@
             style="@style/accountnameStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mobile No. : " />
+            android:text="D.O.B : " />
 
         <TextView
             android:id="@+id/mcontactperson"
@@ -99,7 +99,7 @@
             style="@style/accountnameStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location : " />
+            android:text="Mobile : " />
 
         <TextView
             android:id="@+id/mlocation"
@@ -122,7 +122,7 @@
             style="@style/accountnameStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Batch Name : " />
+            android:text="Email Id : " />
 
         <TextView
             android:id="@+id/mstartDate"

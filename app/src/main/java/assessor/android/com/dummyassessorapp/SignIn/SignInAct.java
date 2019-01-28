@@ -156,13 +156,15 @@ public class SignInAct extends AppCompatActivity {
                    if (status.equals("1")){
                        String message=jobj.getString("msg");
                        String name= jobj.getString("name");
+                       String assessorid=jobj.getString("assessor_id");
                        String address=jobj.getString("address");
                        String tab_row = jobj.getString("user_type");
-                       Toast.makeText(getApplicationContext(),"Username is"+message+name+address+tab_row,Toast.LENGTH_LONG).show();
+                       Toast.makeText(getApplicationContext(),"Username is"+assessorid,Toast.LENGTH_LONG).show();
                        sessionManager.setPreferences(getApplicationContext(), "status", "1");
                        SharedPreferences.Editor editor = sharedpreferences.edit();
                        editor.putString("Name", name);
                        editor.putString("address", address);
+                       editor.putString("assessorid",assessorid);
                        editor.apply();
                        Intent ii=new Intent(SignInAct.this,Welcome_page.class);
                        startActivity(ii);

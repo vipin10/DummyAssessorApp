@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
@@ -35,25 +36,47 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import assessor.android.com.dummyassessorapp.AsssessorAttendance.BatchSelection;
+import assessor.android.com.dummyassessorapp.GlobalAccess.MyNetwork;
 import assessor.android.com.dummyassessorapp.R;
 
 public class StudentsListAct extends AppCompatActivity {
     RecyclerView meet_rc;
     final Context myContext = StudentsListAct.this;
+    String batchidd;
+    List<String> Studentname = new ArrayList<>();
+    List<String> mob = new ArrayList<>();
+    List<String> Dob = new ArrayList<>();
+    List<String> Email = new ArrayList<>();
+    ProgressDialog pdd;
+    SharedPreferences sp;
+    final String mypreference = "mypref1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_list);
+        Intent il=getIntent();
+        batchidd=il.getStringExtra("batchid");
+        sp=getSharedPreferences(mypreference,Context.MODE_PRIVATE);
+        Toast.makeText(getApplicationContext(),"batchidd"+batchidd,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -63,6 +86,7 @@ public class StudentsListAct extends AppCompatActivity {
         meet_rc = (RecyclerView) findViewById(R.id.meet_rc);
         meet_rc.setLayoutManager(new LinearLayoutManager(myContext));
         meet_rc.setAdapter(new MeetAdapter());
+        StudentsList();
     }
 
     private class MeetAdapter extends RecyclerView.Adapter<MeetAdapter.ViewHolder> {
@@ -75,16 +99,19 @@ public class StudentsListAct extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.maccountName.setText("Student1");
-            holder.mcontactperson.setText("9015363586");
-            holder.mlocation.setText("Varanasi");
-            holder.mstartDate.setText("Batch no. 1");
+            if (Studentname.get(position)!=null) {
+                holder.maccountName.setText(Studentname.get(position));
+                holder.mcontactperson.setText(Dob.get(position));
+                holder.mlocation.setText(mob.get(position));
+                holder.mstartDate.setText(Email.get(position));
+            }else{
+                Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_LONG).show();
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 8;
-           // return accountName.size();
+            return Studentname.size();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -101,10 +128,6 @@ public class StudentsListAct extends AppCompatActivity {
                 mlocation = (TextView) itemView.findViewById(R.id.mlocation);
                 mstartDate = (TextView) itemView.findViewById(R.id.mstartDate);
                 mendDate = (TextView) itemView.findViewById(R.id.mendDate);
-              /*  meetStatus = (TextView) itemView.findViewById(R.id.meetStatus);
-                textMenu = (TextView) itemView.findViewById(R.id.textMenu);*/
-               // textMenu.setOnClickListener(this);
-
             }
 
             @Override
@@ -114,46 +137,94 @@ public class StudentsListAct extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                String ab=maccountName.getText().toString();
+                String mobilee=mlocation.getText().toString();
+                Toast.makeText(myContext, "abbbb"+ab, Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("StuName", ab);
+                editor.putString("phone", mobilee);
+                editor.apply();
                Intent ii=new Intent(StudentsListAct.this,StudentAttenAct.class);
                startActivity(ii);
             }
 
-          /*  @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.yesBtn:
-                        dialog.cancel();
-                        new ProgressDialog(myContext);
-                        pd.setCancelable(false);
-                        pd.setMessage("Please wait...");
-                        pd.show();
-                        checkLocation();
-                        break;
-                    case R.id.noBtn:
-                        dialog.cancel();
-                        break;
-                    case R.id.textMenu:
-                        PopupMenu popupMenu = new PopupMenu(myContext, v);
-                        popupMenu.getMenu().add(0, R.id.infoItem, 0, "Detail Info");
-                        popupMenu.getMenu().add(0, R.id.stopMeet, 0, "Stop Meeting");
-                        popupMenu.setOnMenuItemClickListener(this);
-                        popupMenu.show();
-                        break;
-                    default:
-                        dialog = new MyAlertDialog(v.getContext());
-                        dialog.setCancelable(false);
-                        LayoutInflater inflater = LayoutInflater.from(myContext);
-                        View view = inflater.inflate(R.layout.meeting_start, null);
-                        view.findViewById(R.id.noBtn).setOnClickListener(this);
-                        view.findViewById(R.id.yesBtn).setOnClickListener(this);
-                        dialog.setView(view);
-                        dialog.show();
+        }
+
+        }
+
+
+
+    private void StudentsList() {
+        pdd = new ProgressDialog(StudentsListAct.this);
+        pdd.setMessage("Loading...");
+        pdd.show();
+        String serverURL = "https://www.skillassessment.org/ssc/android_connect/batch_students.php";
+
+
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jobj = new JSONObject(response);
+                    //Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    String status= jobj.getString("status");
+                    if (status.equals("1")){
+                        JSONArray jsonArray=jobj.getJSONArray("students");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.getJSONObject(i);
+                            Studentname.add(c.getString("student_id"));
+                            mob.add(c.getString("mobile"));
+                            Email.add(c.getString("email"));
+                            Dob.add(c.getString("dob"));
+                            //Toast.makeText(getApplicationContext(),"data is"+Studentname+mob+Email+Dob,Toast.LENGTH_LONG).show();
+
+
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }*/
+                meet_rc = (RecyclerView) findViewById(R.id.meet_rc);
+                meet_rc.setLayoutManager(new LinearLayoutManager(myContext));
+                meet_rc.setAdapter(new MeetAdapter());
 
+                if (pdd.isShowing()) {
+                    pdd.dismiss();
+                }
+            }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-        }
+                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
 
+                return map;
+            }
 
-        }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("batch_id", batchidd);
+
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
 }
