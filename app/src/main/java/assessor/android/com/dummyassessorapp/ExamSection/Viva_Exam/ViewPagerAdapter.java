@@ -1,4 +1,4 @@
-package assessor.android.com.dummyassessorapp.ExamSection;
+package assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

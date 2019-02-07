@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import assessor.android.com.dummyassessorapp.AsssessorAttendance.Welcome_page;
-import assessor.android.com.dummyassessorapp.ExamSection.MainActivity;
 import assessor.android.com.dummyassessorapp.GlobalAccess.SessionManager;
 import assessor.android.com.dummyassessorapp.R;
 
@@ -32,7 +30,6 @@ SessionManager session;
        // goNext();
         perm = ContextCompat.checkSelfPermission(this,  Manifest.permission.ACCESS_FINE_LOCATION);
         perm1 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-
         sp=getSharedPreferences("prefs", MODE_PRIVATE);
    /*     if (sp.contains("millisLeft")) {
             timee = sp.getLong("millisLeft", timee);

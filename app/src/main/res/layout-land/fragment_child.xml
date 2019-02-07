@@ -86,7 +86,7 @@
         android:weightSum="1"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_below="@+id/option1"
         >
         <TextView
@@ -130,7 +130,7 @@
         android:weightSum="1"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_below="@+id/option2"
         >
         <TextView
@@ -174,7 +174,7 @@
         android:weightSum="1"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_below="@+id/option3"
         >
         <TextView

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="assessor.android.com.dummyassessorapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -10,13 +11,30 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ExamSection.Practical_Marks"></activity>
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".ExamSection.Practical_Exam.Practical_Exam"></activity>
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="sugar_example.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="assessor.android.com.dummyassessorapp" />
+
+        <activity android:name=".ExamSection.Viva_Exam.Practical_Marks" />
         <activity
             android:name=".SignIn.SplashScreen"
             android:theme="@style/AppTheme1">
@@ -26,6 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SignIn.Assessor_Signup"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".AsssessorAttendance.AssessorAttenAct"
             android:label="Assesor Attendance"
@@ -57,7 +78,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name=".ExamSection.MainActivity"
+            android:name=".ExamSection.Viva_Exam.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/Apptheme2" />
         <activity android:name=".Assesment_Que.Question_List" />
     </application>

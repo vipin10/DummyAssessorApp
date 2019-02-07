@@ -1,4 +1,4 @@
-package assessor.android.com.dummyassessorapp.ExamSection;
+package assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +21,6 @@ public class FragmentParent extends Fragment {
     private ViewPagerAdapter adapter;
      TextView ttv;
      DbAutoSave dbAutoSave;
-int positionn=0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +50,6 @@ int positionn=0;
             @Override
             public void onPageSelected(int position) {
                  int i=viewPager.getCurrentItem();
-                //Toast.makeText(getContext(),"ddd"+i,Toast.LENGTH_LONG).show();
             }
 
             @Override

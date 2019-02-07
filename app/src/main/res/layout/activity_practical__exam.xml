@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExamSection.Viva_Exam.MainActivity">
+
+
+
+    <include android:id="@+id/count_down_strip1" layout="@layout/submitt" />
+
+    <fragment
+        android:id="@+id/fragmentParent1"
+        android:name="assessor.android.com.dummyassessorapp.ExamSection.Practical_Exam.Practical_FragmentParent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/count_down_strip1"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

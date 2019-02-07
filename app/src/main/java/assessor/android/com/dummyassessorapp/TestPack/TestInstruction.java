@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import assessor.android.com.dummyassessorapp.Assesment_Que.Question_List;
-import assessor.android.com.dummyassessorapp.ExamSection.MainActivity;
+import assessor.android.com.dummyassessorapp.ExamSection.Practical_Exam.Practical_Exam;
+import assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam.MainActivity;
 import assessor.android.com.dummyassessorapp.R;
 
 public class TestInstruction extends AppCompatActivity {

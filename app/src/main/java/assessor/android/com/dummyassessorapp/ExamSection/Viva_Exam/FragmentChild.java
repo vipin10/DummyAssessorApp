@@ -1,6 +1,8 @@
-package assessor.android.com.dummyassessorapp.ExamSection;
+package assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,11 +27,11 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
-    String idd;
-    String query;
-
-
-
+    String idd,Stuid;
+    String query,query1,assessoridd;
+    SharedPreferences sharedPreferences,sharedPreferences1;
+    public static final String mypreference = "mypref";
+    public static final String mypreference1 = "mypref1";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +42,13 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         dbAutoSave = new DbAutoSave(getContext());
         getIDs(view);
         setEvents();
-        idd=dbAutoSave.getDataOfSingleClient(query);
+        idd=dbAutoSave.getDataOfSingleClient(query1,query);
+        sharedPreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        sharedPreferences1 = getActivity().getSharedPreferences(mypreference1, Context.MODE_PRIVATE);
+        Stuid=sharedPreferences1.getString("StuName","");
+        System.out.println("aaa"+Stuid);
+        assessoridd=sharedPreferences.getString("assessorid","");
+
         return view;
     }
 
@@ -101,6 +109,27 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
             return;
         }
         query=t1.getText().toString();
+        query1=Stuid;
+        String optionselectedd=dbAutoSave.getD(t1.getText().toString());
+
+        if (optionselectedd.equals("Satisfactory")){
+            Toast.makeText(getContext(),"dddddd"+optionselectedd,Toast.LENGTH_LONG).show();
+            titlea.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
+        }else if (optionselectedd.equals("clear and on point")){
+            Toast.makeText(getContext(),"dddddd"+optionselectedd,Toast.LENGTH_LONG).show();
+            titleb.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
+        }
+        else if (optionselectedd.equals("Poor")){
+            Toast.makeText(getContext(),"dddddd"+optionselectedd,Toast.LENGTH_LONG).show();
+            titlec.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
+        }
+        else if (optionselectedd.equals("Very Poor")){
+            Toast.makeText(getContext(),"dddddd"+optionselectedd,Toast.LENGTH_LONG).show();
+            titled.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
+        }
+        else {
+
+        }
     }
 
     private void setEvents() {
@@ -120,54 +149,55 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.option1:
                 titlea.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
-                idd=dbAutoSave.getDataOfSingleClient(query);
+                idd=dbAutoSave.getDataOfSingleClient(query1,query);
                 if (idd!=(null)){
-                    dbAutoSave.updateData(quename,childname,optiona.getText().toString(),idd);
+                    dbAutoSave.updateData(assessoridd,Stuid,t1.getText().toString(),optiona.getText().toString());
                     //Toast.makeText(getContext(),"Updated"+optiona.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    dbAutoSave.insertData(quename, childname, optiona.getText().toString());
+                    dbAutoSave.insertData(assessoridd,Stuid,t1.getText().toString(),optiona.getText().toString());
                     // Toast.makeText(getContext(),"inserted"+optiona.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.option2:
                 titleb.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
-                idd=dbAutoSave.getDataOfSingleClient(quename);
+                idd=dbAutoSave.getDataOfSingleClient(query1,query);
                 if (idd!=(null)){
-                    dbAutoSave.updateData(quename,childname,optionb.getText().toString(),idd);
+                    dbAutoSave.updateData(assessoridd,Stuid,t1.getText().toString(),optionb.getText().toString());
                     // Toast.makeText(getContext(),"Updated"+optionb.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    dbAutoSave.insertData(quename, childname, optionb.getText().toString());
+                    dbAutoSave.insertData(assessoridd,Stuid,t1.getText().toString(),optionb.getText().toString());
                     // Toast.makeText(getContext(),"inserted"+optionb.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.option3:
                 titlec.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
-                idd=dbAutoSave.getDataOfSingleClient(quename);
+                idd=dbAutoSave.getDataOfSingleClient(query1,query);
                 if (idd!=(null)){
-                    dbAutoSave.updateData(quename,childname,optionc.getText().toString(),idd);
+                    dbAutoSave.updateData(assessoridd,Stuid,t1.getText().toString(),optionc.getText().toString());
                     // Toast.makeText(getContext(),"Updated"+optionc.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    dbAutoSave.insertData(quename, childname, optionc.getText().toString());
+                    dbAutoSave.insertData(assessoridd,Stuid,t1.getText().toString(),optionc.getText().toString());
                     //  Toast.makeText(getContext(),"inserted"+optionc.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 break;
             case  R.id.option4:
 
                 titled.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
-                idd=dbAutoSave.getDataOfSingleClient(quename);
+                idd=dbAutoSave.getDataOfSingleClient(query1,query);
                 if (idd!=(null)){
-                    dbAutoSave.updateData(quename,childname,optiond.getText().toString(),idd);
+                    dbAutoSave.updateData(assessoridd,Stuid,t1.getText().toString(),optiond.getText().toString());
                     //  Toast.makeText(getContext(),"Updated"+optiond.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    dbAutoSave.insertData(quename, childname, optiond.getText().toString());
+                    dbAutoSave.insertData(assessoridd,Stuid,t1.getText().toString(),optiond.getText().toString());
                     //  Toast.makeText(getContext(),"inserted"+optiond.getText().toString(),Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
                 break;
-        }    }
+        }
+    }
 }

@@ -1,10 +1,12 @@
-package assessor.android.com.dummyassessorapp.ExamSection;
+package assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
@@ -12,8 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import assessor.android.com.dummyassessorapp.GlobalAccess.MyNetwork;
 import assessor.android.com.dummyassessorapp.LocalDB.DbAutoSave;
 import assessor.android.com.dummyassessorapp.R;
 import assessor.android.com.dummyassessorapp.StudentsAttenandList.StudentsListAct;
@@ -28,9 +47,12 @@ public class MainActivity extends AppCompatActivity {
     TextView textView,finalSubmitbutton;
     DbAutoSave dbAutoSave;
     String namee1;
-    SharedPreferences sharedPreferences;
+    ProgressDialog pdd;
+    Cursor cr;
+    SharedPreferences sharedPreferences,spp;
     public static final String mypreference = "mypref1";
-    String currentatten;
+    public static final String mypreferences1= "mypref";
+    String currentatten,assessoridd,batchidd1;
     ArrayList<String> aa=new ArrayList<>();
      ArrayList<String> bb=new ArrayList<>();
      ArrayList<String[]> options=new ArrayList<>();
@@ -70,10 +92,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getIDs();
         dbAutoSave = new DbAutoSave(getApplicationContext());
+        spp=getSharedPreferences(mypreferences1,Context.MODE_PRIVATE);
         sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         namee1=sharedPreferences.getString("StuName","");
+        assessoridd=spp.getString("assessorid","");
+        batchidd1=spp.getString("batch_id","");
         //setEvents();
-        aa.add("1");
+        /*aa.add("1");
         aa.add("2");
         aa.add("3");
         aa.add("4");
@@ -82,18 +107,13 @@ public class MainActivity extends AppCompatActivity {
         bb.add("Who is Prime minister of india.");
         bb.add("who is chief Minister of Delhi.");
         bb.add("Under whose captaincy India won world Cup 1983.");
-        bb.add("Who wrote Ramayana.");
+        bb.add("Who wrote Ramayana.");*/
         options.add(title);
         options.add(title1);
         options.add(title2);
         options.add(title3);
         options.add(title4);
         currentatten=sharedPreferences.getString("currentatten","");
-        for (int ii=0;ii<=aa.size()-1;ii++) {
-
-            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii));
-
-        }
     }
 
     private void getIDs() {
@@ -107,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Questionlist();
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
@@ -125,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 TimerRunning = false;
                 updateCountDownText();
                 updateButtons();
+                resetTimer();
             } else {
                 startTimer();
             }
@@ -138,7 +160,10 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface arg0, int arg1) {
-                                dbAutoSave.insertddd(namee1,currentatten,"1");
+                                resetTimer();
+                                dbAutoSave.updateD(assessoridd,namee1,currentatten,"1");
+                                //dbAutoSave.insertddd(assessoridd,namee1,currentatten,"1");
+                                //resetTimer();
                                 Intent ii=new Intent(MainActivity.this, StudentsListAct.class);
                                 startActivity(ii);
                             }
@@ -179,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
                         })
 
                         .show();*/
+
+               // resetTimer();
                 textView.setText("done!");
                 TimerRunning = false;
                 updateButtons();
@@ -248,6 +275,85 @@ public class MainActivity extends AppCompatActivity {
             CountDownTimer.cancel();
         }
     }
+
+    private void Questionlist() {
+        pdd = new ProgressDialog(MainActivity.this);
+        pdd.setMessage("Loading...");
+        pdd.show();
+        String serverURL = "https://www.skillassessment.org/ssc/android_connect/batch_questions.php";
+
+
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jobj = new JSONObject(response);
+                    Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    String status= jobj.getString("status");
+                    if (status.equals("1")){
+                        JSONArray jsonArray=jobj.getJSONArray("questions");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.getJSONObject(i);
+                            aa.add(c.getString("question_id"));
+                            bb.add(c.getString("question"));
+                         /*   Studentname.add(c.getString("student_id"));
+                            mob.add(c.getString("mobile"));
+                            Email.add(c.getString("email"));
+                            Dob.add(c.getString("dob"));*/
+                        }
+                        //Toast.makeText(getApplicationContext(),"data is"+aa+bb,Toast.LENGTH_LONG).show();
+                        for (int ii=0;ii<=aa.size()-1;ii++) {
+                            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii));
+
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (pdd.isShowing()) {
+                    pdd.dismiss();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (pdd.isShowing()) {
+                    pdd.dismiss();
+                }
+                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
+
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("batch_id", batchidd1);
+                map.put("language","en");
+
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

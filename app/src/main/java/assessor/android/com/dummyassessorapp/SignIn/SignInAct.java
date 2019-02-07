@@ -87,14 +87,14 @@ public class SignInAct extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"The required fields Username and password can't be empty",Toast.LENGTH_LONG).show();
                 }else {
                     sendDataServer();
-                }/* Intent i=new Intent(getApplicationContext(),Welcome_page.class);
-                startActivity(i);*/
+                }
             }
         });
         skiptextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishAffinity();
+                Intent ii=new Intent(SignInAct.this,Assessor_Signup.class);
+                startActivity(ii);
             }
         });
     }

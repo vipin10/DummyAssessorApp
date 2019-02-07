@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExamSection.MainActivity">
+    tools:context=".ExamSection.Viva_Exam.MainActivity">
 
 
     <!--<Button
@@ -17,7 +17,7 @@
     <include android:id="@+id/count_down_strip" layout="@layout/countdown_timer_header" />
     <fragment
         android:id="@+id/fragmentParent"
-        android:name="assessor.android.com.dummyassessorapp.ExamSection.FragmentParent"
+        android:name="assessor.android.com.dummyassessorapp.ExamSection.Viva_Exam.FragmentParent"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@id/count_down_strip"

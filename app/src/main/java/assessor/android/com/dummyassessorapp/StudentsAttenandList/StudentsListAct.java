@@ -25,6 +25,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ import java.util.Map;
 import assessor.android.com.dummyassessorapp.AsssessorAttendance.BatchSelection;
 import assessor.android.com.dummyassessorapp.GlobalAccess.MyNetwork;
 import assessor.android.com.dummyassessorapp.LocalDB.DbAutoSave;
+import assessor.android.com.dummyassessorapp.LocalDB.Studentslistdb;
 import assessor.android.com.dummyassessorapp.R;
 
 public class StudentsListAct extends AppCompatActivity {
@@ -68,34 +71,26 @@ public class StudentsListAct extends AppCompatActivity {
     List<String> mob = new ArrayList<>();
     List<String> Dob = new ArrayList<>();
     List<String> Email = new ArrayList<>();
+    List<String> attenstatus1 =new ArrayList<>();
     ProgressDialog pdd;
-    SharedPreferences sp;
+    SharedPreferences sp,sp1;
     Cursor cursor;
     final String mypreference = "mypref1";
+    final String mypreference1 = "mypref";
     DbAutoSave dbAutoSave;
     String attenstatus;
+    LinearLayout cardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_list);
         Intent il=getIntent();
-        batchidd=il.getStringExtra("batchid");
         sp=getSharedPreferences(mypreference,Context.MODE_PRIVATE);
+        sp1=getSharedPreferences(mypreference1,Context.MODE_PRIVATE);
+        batchidd=sp1.getString("batch_id","");
         Toast.makeText(getApplicationContext(),"batchidd"+batchidd,Toast.LENGTH_LONG).show();
         dbAutoSave=new DbAutoSave(getApplicationContext());
-        cursor=dbAutoSave.getAllData();
-        if (cursor!=null){
-            cursor.moveToFirst();
-            attenstatus=cursor.getColumnName(3);
-            if (attenstatus.equals("0")){
 
-            }else if(attenstatus.equals("1")){
-
-            }else
-            {
-
-            }
-        }
     }
 
     @Override
@@ -106,6 +101,7 @@ public class StudentsListAct extends AppCompatActivity {
         meet_rc.setLayoutManager(new LinearLayoutManager(myContext));
         meet_rc.setAdapter(new MeetAdapter());
         StudentsList();
+
     }
 
     private class MeetAdapter extends RecyclerView.Adapter<MeetAdapter.ViewHolder> {
@@ -119,11 +115,35 @@ public class StudentsListAct extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (Studentname.get(position)!=null) {
+                Cursor cursor=dbAutoSave.getReadableDatabase().rawQuery("select * from attenstatus",null);
+                if (cursor.getCount()>0) {
+                    cursor.moveToFirst();
+                    attenstatus = cursor.getString(3);
+                    attenstatus1.add(attenstatus);
+                }
+                    Toast.makeText(getApplicationContext(),"atten status is "+attenstatus1,Toast.LENGTH_LONG).show();
+               /*  for (int ii=0;ii<=1;ii++){
+                     if (attenstatus1.get(ii).equals("1")){
+                         cardView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        // holder.mendDate.setText("Present");
+                     }
+                     else if (attenstatus1.get(ii).equals(null)){
+                         holder.mendDate.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        // holder.mendDate.setText("Absent");
+                     }
+
+                 }
+*/
+
+
+                cursor.close();
                 holder.maccountName.setText(Studentname.get(position));
                 holder.mcontactperson.setText(Dob.get(position));
                 holder.mlocation.setText(mob.get(position));
                 holder.mstartDate.setText(Email.get(position));
-            }else{
+
+            }
+            else{
                 Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_LONG).show();
             }
         }
@@ -142,6 +162,7 @@ public class StudentsListAct extends AppCompatActivity {
             ViewHolder(View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this);
+                cardView=itemView.findViewById(R.id.cardv1);
                 maccountName = (TextView) itemView.findViewById(R.id.maccountName);
                 mcontactperson = (TextView) itemView.findViewById(R.id.mcontactperson);
                 mlocation = (TextView) itemView.findViewById(R.id.mlocation);
@@ -172,7 +193,11 @@ public class StudentsListAct extends AppCompatActivity {
 
         }
 
-
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        StudentsList();
+    }*/
 
     private void StudentsList() {
         pdd = new ProgressDialog(StudentsListAct.this);
@@ -221,7 +246,9 @@ public class StudentsListAct extends AppCompatActivity {
             }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (pdd.isShowing()) {
+                    pdd.dismiss();
+                }
                 Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
             }
         }) {
